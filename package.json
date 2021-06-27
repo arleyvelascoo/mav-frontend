@@ -58,7 +58,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npx prettier src/** --write && npx eslint 'src/**' --fix"
+      "pre-commit": "npx eslint src/** --fix"
     }
   }
 }
