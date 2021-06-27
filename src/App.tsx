@@ -1,17 +1,14 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import "index.css";
-
-function neverUsedXd() {}
-
-const helloWorld: string = "Hello World";
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+import 'index.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <h2>Arley David Velasco App</h2>
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>

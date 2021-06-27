@@ -26,7 +26,6 @@
     "semi": "off",
     "no-use-before-define": "off",
     "semi-style": "error",
-    "quotes": "off",
     "space-before-function-paren": "off"
   }
 }
