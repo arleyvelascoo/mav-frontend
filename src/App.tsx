@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import "index.css";
 
-function neverUsed() {}
+function neverUsedXd() {}
 
 function App() {
   return (
