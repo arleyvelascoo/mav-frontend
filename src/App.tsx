@@ -5,6 +5,8 @@ import "index.css";
 
 function neverUsedXd() {}
 
+const helloWorld: string = "Hello World";
+
 function App() {
   return (
     <div className="App">
