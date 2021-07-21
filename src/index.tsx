@@ -1,14 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import 'bootswatch/dist/materia/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import PersonList from './person/PersonList';
+import DenseAppBar from './App';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <DenseAppBar />
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={PersonList} />
+        <Route path="/newPerson" component={PersonList} />
+      </Switch>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
