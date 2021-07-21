@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Container } from '@material-ui/core';
+import {
+  makeStyles,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Container,
+  CircularProgress,
+} from '@material-ui/core';
 import axios, { AxiosResponse } from 'axios';
-import {Pageable} from '../model/Pageable';
-import {Ministry} from '../model/Ministry';
+import { Pageable } from '../model/Pageable';
+import { City } from '../model/City';
 
 const useStyles = makeStyles({
   table: {
@@ -10,49 +21,59 @@ const useStyles = makeStyles({
   },
 });
 
-class Ministr implements Pageable<Ministry>{
-}
-
-const [ministries, setMinistries]: [Pageable<Ministry>, (ministries: Pageable<Ministry>) => void] = useState(new Ministr());
-
 const PersonList = () => {
-
+  const [stateLoading, setStateLoading] = useState<boolean>(false);
+  const [cities, setCities] = useState<City[]>([]);
+  const [pageable, setPageable] = useState<Pageable<City> | null>(null);
   const classes = useStyles();
   useEffect(() => {
+    setStateLoading(true);
     axios
-    .get<Pageable<Ministry>>(
-      'http://localhost:8886/minstarleyvelasco/api/country/all'
-    )
-    .then((response: AxiosResponse) => {
-      setMinistries(response.data);
-    });
-    console.log('works');
+      .get<Pageable<City>>(
+        'http://localhost:8886/minstarleyvelasco/api/city/all'
+      )
+      .then((response: AxiosResponse) => {
+        setPageable(response.data);
+        setCities(pageable === null ? [] : pageable.content);
+        setStateLoading(false);
+      });
+
+    console.log('hello world');
   }, []);
-  return (
-    <Container>
-    <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {ministries.content.map((row: Ministry) => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row">
-                {row.firstLeaderName}
-              </TableCell>
-              <TableCell align="right">{row.secondLeaderName}</TableCell>
-              <TableCell align="right">{row.idHigherMinistry}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    </Container>
+  return stateLoading ? (
+    <CircularProgress />
+  ) : (
+    <div>
+      <CircularProgress />
+      <Container>
+        <TableContainer component={Paper}>
+          <Table
+            className={classes.table}
+            size="small"
+            aria-label="a dense table"
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell>Nombre</TableCell>
+                <TableCell align="right">Código</TableCell>
+                <TableCell align="right">Departamento</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {cities.map((row: City) => (
+                <TableRow key={row.id}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right">{row.code}</TableCell>
+                  <TableCell align="right">{row.stateNamew}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
+    </div>
   );
 };
 
