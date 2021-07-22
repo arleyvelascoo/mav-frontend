@@ -3,16 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import PersonList from './person/PersonList';
+import CityTable from './city/CityTable';
 import DenseAppBar from './App';
+import CityPaginatedTable from './city/CityPaginatedTable';
 
 ReactDOM.render(
   <React.StrictMode>
     <DenseAppBar />
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={PersonList} />
-        <Route path="/newPerson" component={PersonList} />
+        <Route exact path="/" component={CityTable} />
+        <Route path="/cities" component={CityTable} />
+        <Route path="/citiesPaginated" component={CityPaginatedTable} />
       </Switch>
     </BrowserRouter>
   </React.StrictMode>,
