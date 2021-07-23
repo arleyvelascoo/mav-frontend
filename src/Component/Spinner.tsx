@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       margin:0,
       padding:0,
       display: 'flex',
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       minHeight:'100vh',
@@ -36,6 +37,7 @@ const  Spinner =  () =>{
         <div className={classes.paper}>
           <div className={classes.spinner}>
             <CircularProgress color="secondary" />
+            <p>Loading</p>
           </div>
         </div>
 

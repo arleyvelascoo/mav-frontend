@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import CityTable from './city/CityTable';
 import DenseAppBar from './App';
 import CityPaginatedTable from './city/CityPaginatedTable';
@@ -11,14 +11,15 @@ import CityPTable from './city/CityPTable';
 ReactDOM.render(
   <React.StrictMode>
     <DenseAppBar />
-    <BrowserRouter>
+    <Router>
+      <Link to="/citiesPTable"> spinner</Link>
       <Switch>
         <Route exact path="/" component={CityTable} />
         <Route path="/cities" component={CityTable} />
         <Route path="/citiesPaginated" component={CityPaginatedTable} />
         <Route path="/citiesPTable" component={CityPTable} />
       </Switch>
-    </BrowserRouter>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
