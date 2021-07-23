@@ -11,26 +11,28 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.paper,
       opacity: 0.5,
     },
-    spinner:{
-      margin:0,
-      padding:0,
+    spinner: {
+      margin: 0,
+      padding: 0,
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      minHeight:'100vh',
+      minHeight: '100vh',
     },
-  }),
+  })
 );
 
+interface SpinnerProps {
+  loading: boolean;
+}
 
-
-const  Spinner =  () =>{
+const Spinner = (props: SpinnerProps) => {
   const classes = useStyles();
-  return(
+  return (
     <div>
       <Modal
-        open={true}
+        open={props.loading}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
@@ -40,11 +42,9 @@ const  Spinner =  () =>{
             <p>Loading</p>
           </div>
         </div>
-
       </Modal>
-
     </div>
-  )
-}
+  );
+};
 
 export default Spinner;

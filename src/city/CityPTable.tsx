@@ -212,6 +212,7 @@ export default function CityPTable() {
   }, []);
   return (
     <Container>
+      <Spinner loading={isLoading} />
       <Paper className={classes.paper}>
         <TableContainer>
           <Table className={classes.table}>
@@ -222,19 +223,15 @@ export default function CityPTable() {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {isLoading ? (
-                <Spinner/>
-              ) : (
-                rows.map((row: City) => (
-                  <TableRow key={row.id}>
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell>{row.code}</TableCell>
-                    <TableCell>{row.stateNamew}</TableCell>
-                  </TableRow>
-                ))
-              )}
+              {rows.map((row: City) => (
+                <TableRow key={row.id}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell>{row.code}</TableCell>
+                  <TableCell>{row.stateNamew}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
