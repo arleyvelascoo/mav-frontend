@@ -3,7 +3,6 @@ import axios, { AxiosResponse } from 'axios';
 import { Pageable } from '../model/Pageable';
 import { City } from '../model/City';
 import {
-  CircularProgress,
   Container,
   makeStyles,
   Paper,
@@ -18,6 +17,7 @@ import {
 } from '@material-ui/core';
 import { HeadCell } from '../model/HeadCell';
 import { createStyles, Theme } from '@material-ui/core/styles';
+import Spinner from '../Component/Spinner';
 
 type Order = 'asc' | 'desc';
 
@@ -222,10 +222,8 @@ export default function CityPTable() {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {isLoading ? (
-                <div className={classes.spinner}>
-                  <CircularProgress />
-                </div>
+              {!isLoading ? (
+                <Spinner/>
               ) : (
                 rows.map((row: City) => (
                   <TableRow key={row.id}>
