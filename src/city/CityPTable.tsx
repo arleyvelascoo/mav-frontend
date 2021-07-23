@@ -3,13 +3,16 @@ import axios, { AxiosResponse } from 'axios';
 import { Pageable } from '../model/Pageable';
 import { City } from '../model/City';
 import {
+  CircularProgress,
   Container,
   makeStyles,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   TableSortLabel,
 } from '@material-ui/core';
@@ -55,6 +58,11 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       top: 20,
       width: 1,
+    },
+    spinner: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   })
 );
@@ -104,16 +112,19 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 export default function CityPTable() {
   const classes = useStyles();
-  const [page, setPage] = useState(20);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [order, setOrder] = useState<Order>('desc');
   const [orderBy, setOrderBy] = useState<keyof City>('stateNamew');
   const [rows, setRows] = useState<City[]>([]);
+  const [totalItems, setTotalItems] = useState<number>(0);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof City
   ) => {
+    setIsLoading(true);
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -130,10 +141,14 @@ export default function CityPTable() {
       )
       .then((response: AxiosResponse) => {
         setRows(response.data.content);
+        setTotalItems(response.data.totalElements);
+        setIsLoading(false);
       });
   };
 
-  useEffect(() => {
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setIsLoading(true);
+    setPage(newPage);
     axios
       .get<Pageable<City>>(
         'http://localhost:8886/minstarleyvelasco/api/city/all?page=' +
@@ -146,36 +161,94 @@ export default function CityPTable() {
           order
       )
       .then((response: AxiosResponse) => {
-        setPage(page);
-        setRowsPerPage(rowsPerPage);
-        setOrder(order);
-        setOrderBy(orderBy);
         setRows(response.data.content);
+        setTotalItems(response.data.totalElements);
+        setIsLoading(false);
       });
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setIsLoading(true);
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+    axios
+      .get<Pageable<City>>(
+        'http://localhost:8886/minstarleyvelasco/api/city/all?page=' +
+          page +
+          '&size=' +
+          parseInt(event.target.value, 10) +
+          '&sort=' +
+          orderBy +
+          ',' +
+          order
+      )
+      .then((response: AxiosResponse) => {
+        setRows(response.data.content);
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      axios
+        .get<Pageable<City>>(
+          'http://localhost:8886/minstarleyvelasco/api/city/all?page=' +
+            page +
+            '&size=' +
+            rowsPerPage +
+            '&sort=' +
+            orderBy +
+            ',' +
+            order
+        )
+        .then((response: AxiosResponse) => {
+          setTotalItems(response.data.totalElements);
+          setRows(response.data.content);
+          setIsLoading(false);
+        });
+    }, 1000);
   }, []);
   return (
     <Container>
-      <TableContainer>
-        <Table>
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            classes={classes}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {rows.map((row: City) => (
-              <TableRow key={row.id}>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell>{row.code}</TableCell>
-                <TableCell>{row.stateNamew}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Paper className={classes.paper}>
+        <TableContainer>
+          <Table className={classes.table}>
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              classes={classes}
+              onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+              {isLoading ? (
+                <div className={classes.spinner}>
+                  <CircularProgress />
+                </div>
+              ) : (
+                rows.map((row: City) => (
+                  <TableRow key={row.id}>
+                    <TableCell component="th" scope="row">
+                      {row.name}
+                    </TableCell>
+                    <TableCell>{row.code}</TableCell>
+                    <TableCell>{row.stateNamew}</TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          count={totalItems}
+          onChangePage={handleChangePage}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </Paper>
     </Container>
   );
 }
