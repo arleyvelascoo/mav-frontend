@@ -27,8 +27,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint",
-    "lint:fix": "yarn run lint src/** --fix",
+    "lint": "eslint ./src --ext .tsx,.ts",
+    "lint:fix": "yarn run lint --fix",
     "prepare": "husky install"
   },
   "eslintConfig": {
