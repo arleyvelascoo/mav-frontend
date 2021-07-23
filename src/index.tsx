@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CityTable from './city/CityTable';
 import DenseAppBar from './App';
 import CityPaginatedTable from './city/CityPaginatedTable';
+import CityPTable from './city/CityPTable';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,6 +16,7 @@ ReactDOM.render(
         <Route exact path="/" component={CityTable} />
         <Route path="/cities" component={CityTable} />
         <Route path="/citiesPaginated" component={CityPaginatedTable} />
+        <Route path="/citiesPTable" component={CityPTable} />
       </Switch>
     </BrowserRouter>
   </React.StrictMode>,
