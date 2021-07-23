@@ -28,7 +28,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint",
-    "lint:fix": "yarn run lint 'src/**' --fix",
+    "lint:fix": "yarn run lint src/** --fix",
     "prepare": "husky install"
   },
   "eslintConfig": {
