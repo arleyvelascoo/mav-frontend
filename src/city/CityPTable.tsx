@@ -222,7 +222,7 @@ export default function CityPTable() {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {!isLoading ? (
+              {isLoading ? (
                 <Spinner/>
               ) : (
                 rows.map((row: City) => (
