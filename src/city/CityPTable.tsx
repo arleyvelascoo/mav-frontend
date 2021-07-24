@@ -135,9 +135,9 @@ export default function CityPTable() {
           '&size=' +
           rowsPerPage +
           '&sort=' +
-          orderBy +
+          property +
           ',' +
-          order
+          (isAsc ? 'desc' : 'asc')
       )
       .then((response: AxiosResponse) => {
         setRows(response.data.content);
